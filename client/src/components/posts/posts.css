@@ -1,6 +1,7 @@
 .posts{
     flex: 9;
     display: flex;
+    /* display 2 columns of post */
     flex-wrap: wrap;
     margin: 20px;
 }

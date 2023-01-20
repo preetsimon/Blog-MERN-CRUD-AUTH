@@ -7,6 +7,7 @@
     display: flex;
     align-items: center;
     font-family: "Josefin Sans", sans-serif;
+    /* add z index to hide main title under navbar */
     z-index: 999;
   }
   
