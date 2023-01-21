@@ -1,14 +1,73 @@
 import TopBar from "./components/topbar/TopBar";
 import Home from "./pages/home/Home";
 import SinglePost from "./pages/singlePost/SinglePostPage";
+import Create from "./pages/create/Create";
+import Setting from "./pages/settings/Setting";
+import Login from "./pages/login/Login";
+
+import {BrowserRouter as Router, Routes, Route, Link, Outlet, Navigate} from "react-router-dom";
+import { useState } from "react";
+
+
+const ProtectedRoute = ({ user, redirectPath = '/login' }) => {
+  if (!user) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return <>
+  {/* <TopBar />  */}
+  <Outlet />
+  </>;
+};
+
+// make all routes private except login
+// const PrivateRoute = ({ isAuthenticated, ...props }) => {
+//   return isAuthenticated ? (
+//     <>
+//       {/* go to child component */}
+//       <Header />
+//       <Outlet />
+//     </>
+//   ) : (
+//     <Navigate replace to="/login" />
+//   );
+// };
 
 function App() {
+  // const user = false;
+  const [user, isUser] = useState(true);
+
   return (
-    <>
+    <Router>
 <TopBar/>
-{/* <Home /> */}
-<SinglePost />
-    </>
+<Routes>
+
+  <Route path="/login" 
+  element= {<Login user={isUser} />}>
+   </Route>
+
+  <Route path="/" 
+  element={<ProtectedRoute user={user} />}> 
+  <Route path="/" element={<Home/>}/>
+  </Route>
+
+  <Route path="/create" 
+  element={<ProtectedRoute user={user} />}> 
+  <Route path="/create" element={<Create/>}/>
+  </Route>
+
+  <Route path="/setting" 
+  element={<ProtectedRoute user={user} />}> 
+  <Route path="/setting" element={<Setting/>}/>
+  </Route>
+
+  <Route path="/post/:postId" 
+  element={<ProtectedRoute user={user} />}> 
+  <Route path="/post/:postId" element={<SinglePost/>}/>
+  </Route>
+
+</Routes>
+    </Router>
   );
 }
 
