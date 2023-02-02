@@ -1,30 +1,50 @@
-import './singlepost.css';
+import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import "./singlepost.css";
 
 const SinglePost = () => {
+  const location = useLocation(); // get post id from url
+  const path = location.pathname.split("/")[2];
+  const [post, setPost] = useState({});
+
+  useEffect(() => {
+    // fire whenever the path changes
+    const getPost = async () => {
+      const res = await axios.get("/posts/" + path);
+      setPost(res.data);
+    };
+    getPost();
+  }, [path]);
   return (
-    <div className='singlePost'>
-        <div className="singlePostWrapper">
-            <img src="https://images.pexels.com/photos/14932984/pexels-photo-14932984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="singlePostImg" />
+    <div className="singlePost">
+      <div className="singlePostWrapper">
+        {post.photo && <img src={post.photo} alt="" />}
 
-            <h1 className="singlePostTitle">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <h1 className="singlePostTitle">
+          {post.title}
+          <div className="singlePostEdit">
+            <i className="singlePostIcon fa-regular fa-pen-to-square"></i>
+            <i className="singlePostIcon fa-solid fa-trash"></i>
+          </div>
+        </h1>
 
-                <div className="singlePostEdit">
-                <i className="singlePostIcon fa-regular fa-pen-to-square"></i>
-                <i className="singlePostIcon fa-solid fa-trash"></i>
-                </div>
-            </h1>
-
-            <div className="singlePostInfo">
-                <span className="singlePostAuthor">Author: <b>SIMON</b></span>
-                <span className="singlePostDate">1 hr ago</span>
-            </div>
-            <p className='singlePostDesc'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam quae ipsa dolore. Libero molestias voluptatum nisi quibusdam neque in nulla voluptatibus numquam voluptatem quam. Aspernatur aliquid aliquam ex voluptates!
-            </p>
+        <div className="singlePostInfo">
+          <span className="singlePostAuthor">
+            Author: <b>{post.username}</b>
+          </span>
+       
+          <span className="singlePostDate">
+          {new Date(post.createdAt).toDateString()}
+          </span>
         </div>
+        <p className="singlePostDesc">
+          {post.desc}
+        </p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default SinglePost
+export default SinglePost;
