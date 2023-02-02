@@ -1,9 +1,9 @@
 import express from "express";
-import User from "../models/User.js";
 import Post from "../models/Post.js";
 
-const router = express.Router();
+// async await DONT forget
 
+const router = express.Router();
 
 //CREATE POST
 router.post("/", async (req, res) => {
@@ -75,7 +75,7 @@ router.get("/", async (req, res) => {
   const username = req.query.user;
   const catName = req.query.cat;
   try {
-    let posts;
+    let posts; // posts array
     if (username) {
       posts = await Post.find({ username });
     } else if (catName) {
@@ -84,7 +84,7 @@ router.get("/", async (req, res) => {
           $in: [catName],
         },
       });
-    } else {
+    } else { // if no username OR catergories to filter, show all
       posts = await Post.find();
     }
     res.status(200).json(posts);
