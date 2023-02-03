@@ -1,6 +1,21 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./sidebar.css";
 
 const SideBar = () => {
+  const [cats, setCats] = useState([]);
+
+  useEffect(() => {
+    // fire thi sat the beginning, hence the empty array as an arg
+    const getCats = async () => {
+      const res = await axios.get("/categories");
+      setCats(res.data);
+      // console.log(res.data[0].name);
+    };
+    getCats();
+  }, []);
+
   return (
     <div className="sidebar">
       <div className="sidebarItem">
@@ -19,24 +34,22 @@ const SideBar = () => {
       <div className="sidebarItem">
         <span className="sidebarTitle">CATEGORIES</span>
         <ul className="sidebarList">
-          <li className="sidebarListItem">Life</li>
-          <li className="sidebarListItem">Music</li>
-          <li className="sidebarListItem">Style</li>
-          <li className="sidebarListItem">Sports</li>
-          <li className="sidebarListItem">Cinema</li>
-          <li className="sidebarListItem">Tech</li>
+        {cats.map((c) => (
+            <Link to={`/?cat=${c.name}`} className="link">
+            <li className="sidebarListItem">{c.name}</li>
+            </Link>
+          ))}
         </ul>
       </div>
-      
-      <div className="sidebarItem">
-      <span className="sidebarTitle">FOLLOW US</span>
-      <div className="sidebarSocial">
-      <i className="sidebarIcon fab fa-facebook"></i> 
-        <i className="sidebarIcon fa-brands fa-twitter"></i>
-        <i className="sidebarIcon fa-brands fa-pinterest"></i>
-        <i className="sidebarIcon fa-brands fa-square-instagram"></i>
-      </div>
 
+      <div className="sidebarItem">
+        <span className="sidebarTitle">FOLLOW US</span>
+        <div className="sidebarSocial">
+          <i className="sidebarIcon fab fa-facebook"></i>
+          <i className="sidebarIcon fa-brands fa-twitter"></i>
+          <i className="sidebarIcon fa-brands fa-pinterest"></i>
+          <i className="sidebarIcon fa-brands fa-square-instagram"></i>
+        </div>
       </div>
     </div>
   );

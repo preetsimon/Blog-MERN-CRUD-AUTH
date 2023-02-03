@@ -1,15 +1,36 @@
+import axios from "axios";
 import { useState } from "react";
 import "./login.css";
 
 const Login = () => {
-  const [toggleState, setToggleState] = useState(0);
+  const [toggleState, setToggleState] = useState(0); // toggle login/signup
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const toggleLogin = (index) => {
     setToggleState(index);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(false);
+    try {
+      const res = await axios.post("/auth/register", {
+        username,
+        email,
+        password,
+      });
+      res.data && setToggleState(0);
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
+  };
+
   return (
     <div className="login">
-   
       <div
         className={
           toggleState === 1 ? "container right-panel-active" : "container"
@@ -17,7 +38,7 @@ const Login = () => {
         id="container"
       >
         <div className="form-container sign-up-container">
-          <form >
+          <form onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className="social-container">
               <a href="#" className="social">
@@ -31,15 +52,28 @@ const Login = () => {
               </a>
             </div>
             <span>or use your email for registration</span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button >Sign Up</button>
+            <input
+              type="text"
+              placeholder="Name"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">Sign Up</button>
+            {error && <span>Something went wrong!</span>}
           </form>
-
         </div>
+
         <div className="form-container sign-in-container">
-          <form >
+          <form>
             <h1>Sign in</h1>
             <div className="social-container">
               <a href="#" className="social">
@@ -56,10 +90,10 @@ const Login = () => {
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Password" />
             <a href="#">Forgot your password?</a>
-            <button >Sign In</button>
+            <button>Sign In</button>
           </form>
-		  
         </div>
+
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
@@ -67,14 +101,24 @@ const Login = () => {
               <p>
                 To keep connected with us please login with your personal info
               </p>
-              <button onClick={() => toggleLogin(0)} className="ghost" id="signIn">
+              <button
+                onClick={() => toggleLogin(0)}
+                className="ghost"
+                id="signIn"
+              >
                 Sign In
               </button>
             </div>
             <div className="overlay-panel overlay-right">
               <h1>Hello, Friend!</h1>
               <p>Enter your personal details and start journey with us</p>
-              <button onClick={() => {toggleLogin(1)}} className="ghost" id="signUp">
+              <button
+                onClick={() => {
+                  toggleLogin(1);
+                }}
+                className="ghost"
+                id="signUp"
+              >
                 Sign Up
               </button>
             </div>
