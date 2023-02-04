@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState, useContext } from "react";
 import "./login.css";
+import { Context } from "../../context/Context";
 
 const Login = () => {
   const [toggleState, setToggleState] = useState(0); // toggle login/signup
@@ -8,6 +9,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+
+  const userRef = useRef();
+  const passwordRef = useRef();
+  const {user, dispatch, isFetching } = useContext(Context);
 
   const toggleLogin = (index) => {
     setToggleState(index);
@@ -29,6 +34,28 @@ const Login = () => {
     }
   };
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "LOGIN_START",
+    });
+    try {
+      const res = await axios.post("/auth/login", {
+        username: userRef.current.value,
+        password: passwordRef.current.value,
+      });
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "LOGIN_FAILURE",
+      });
+    }
+  };
+
+  // console.log(user);
   return (
     <div className="login">
       <div
@@ -73,7 +100,7 @@ const Login = () => {
         </div>
 
         <div className="form-container sign-in-container">
-          <form>
+          <form onSubmit={handleLoginSubmit}>
             <h1>Sign in</h1>
             <div className="social-container">
               <a href="#" className="social">
@@ -87,10 +114,10 @@ const Login = () => {
               </a>
             </div>
             <span>or use your account</span>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
+            <input type="text" placeholder="Username" ref={userRef} />
+            <input type="password" placeholder="Password" ref={passwordRef} />
             <a href="#">Forgot your password?</a>
-            <button>Sign In</button>
+            <button type="submit" disabled={isFetching}>Sign In</button>
           </form>
         </div>
 

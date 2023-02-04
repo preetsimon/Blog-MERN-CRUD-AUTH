@@ -6,7 +6,8 @@ import Setting from "./pages/settings/Setting";
 import Login from "./pages/login/Login";
 
 import {BrowserRouter as Router, Routes, Route, Link, Outlet, Navigate} from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "./context/Context";
 
 
 const ProtectedRoute = ({ user, redirectPath = '/login' }) => {
@@ -35,7 +36,8 @@ const ProtectedRoute = ({ user, redirectPath = '/login' }) => {
 
 function App() {
   // const user = false;
-  const [user, isUser] = useState(true);
+  // const [user, isUser] = useState(true);
+  const {user} = useContext(Context);
 
   return (
     <Router>
@@ -43,7 +45,7 @@ function App() {
 <Routes>
 
   <Route path="/login" 
-  element= {<Login user={isUser} />}>
+  element= {<Login  />}>
    </Route>
 
   <Route path="/" 
