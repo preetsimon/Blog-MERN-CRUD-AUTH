@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRef, useState, useContext } from "react";
 import "./login.css";
 import { Context } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [toggleState, setToggleState] = useState(0); // toggle login/signup
@@ -9,6 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+
+  const navigate = useNavigate();
 
   const userRef = useRef();
   const passwordRef = useRef();
@@ -48,6 +51,7 @@ const Login = () => {
         type: "LOGIN_SUCCESS",
         payload: res.data,
       });
+      navigate('/');
     } catch (error) {
       dispatch({
         type: "LOGIN_FAILURE",

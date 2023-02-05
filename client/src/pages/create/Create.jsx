@@ -1,33 +1,72 @@
+import { useContext, useState } from "react";
 import "./create.css";
+import axios from "axios";
+import { Context } from "../../context/Context";
 
-const Create = () => {
+export default function Create() {
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [file, setFile] = useState(null);
+  const { user } = useContext(Context);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newPost = {
+      username: user.username,
+      title,
+      desc,
+    };
+    if (file) {
+      const data =new FormData();
+      const filename = Date.now() + file.name;
+      data.append("name", filename);
+      data.append("file", file);
+      newPost.photo = filename;
+      try {
+        await axios.post("/upload", data);
+      } catch (err) {}
+    }
+    try {
+      const res = await axios.post("/posts", newPost);
+      window.location.replace("/post/" + res.data._id); // go to the single post Page
+    } catch (err) {}
+  };
   return (
-    <div className="create">
-        <img className="createImg" src="https://images.pexels.com/photos/11256785/pexels-photo-11256785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
-      <form className="createForm">
-        <div className="createFormGroup">
+    <div className="write">
+      {file && (
+        <img className="writeImg" src={URL.createObjectURL(file)} alt="" />
+      )}
+      <form className="writeForm" onSubmit={handleSubmit}>
+        <div className="writeFormGroup">
           <label htmlFor="fileInput">
-            <i className="createIcon fa-solid fa-upload"></i>
+            <i className="writeIcon fas fa-plus"></i>
           </label>
-          <input type="file" id="fileInput" style={{ display: "none" }} />
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => setFile(e.target.files[0])}
+          />
           <input
             type="text"
-            placeholder="title"
-            className="createInput"
+            placeholder="Title"
+            className="writeInput"
             autoFocus={true}
+            onChange={e=>setTitle(e.target.value)}
           />
         </div>
-        <div className="createFormGroup">
+        <div className="writeFormGroup">
           <textarea
-            placeholder="create blog..."
+            placeholder="Tell your story..."
             type="text"
-            className="createInput createText"
+            className="writeInput writeText"
+            onChange={e=>setDesc(e.target.value)}
           ></textarea>
         </div>
-        <button className="createSubmit">Create</button>
+        <button className="writeSubmit" type="submit">
+          Publish
+        </button>
       </form>
     </div>
   );
-};
-
-export default Create;
+}

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
+import path from "path";
+import { fileURLToPath } from 'url';
 
 import Connection from "./database/db.js";
 
@@ -18,6 +20,11 @@ dotenv.config();
 const app = express();
 
 app.use(express.json()); // send any json file/object
+
+// linking images to posts: using path and url module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/images", express.static(path.join(__dirname, "/images")))
 
 const storage = multer.diskStorage({ // store file in images folder, use the filename given by the user 
   destination: (req, file, cb) => {
