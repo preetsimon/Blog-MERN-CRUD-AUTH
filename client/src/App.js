@@ -58,9 +58,9 @@ function App() {
   <Route path="/create" element={<Create/>}/>
   </Route>
 
-  <Route path="/setting" 
+  <Route path="/settings" 
   element={<ProtectedRoute user={user} />}> 
-  <Route path="/setting" element={<Setting/>}/>
+  <Route path="/settings" element={<Setting/>}/>
   </Route>
 
   <Route path="/post/:postId" 

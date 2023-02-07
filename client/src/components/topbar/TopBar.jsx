@@ -48,8 +48,10 @@ function TopBar() {
         </ul>
       </div>
       <div className="topRight">
-        {user ? (
+        {user ? (<Link to="settings">
           <img className="topImg" src={user.profilePic} alt="profile" />
+        </Link>
+   
         ) : (
           <ul className="topList">
             <li className="topListItem">
