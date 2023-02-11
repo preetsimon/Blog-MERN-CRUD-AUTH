@@ -7,7 +7,7 @@ const SideBar = () => {
   const [cats, setCats] = useState([]);
 
   useEffect(() => {
-    // fire thi sat the beginning, hence the empty array as an arg
+    // fire this at the beginning, hence the empty array as an arg
     const getCats = async () => {
       const res = await axios.get("/categories");
       setCats(res.data);
