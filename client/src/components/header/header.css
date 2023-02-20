@@ -1,5 +1,9 @@
 .header {
     margin-top: 60px;
+    background: url("https://images.pexels.com/photos/1752806/pexels-photo-1752806.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1") no-repeat top center fixed;
+    width: 100%;
+    height: 450px;
+    background-size: cover;
   }
   
   .headerTitles {
