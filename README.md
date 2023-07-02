@@ -2,7 +2,7 @@
 
 This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) web application that provides a user-friendly platform for users to register, login, view blogs with images and text, upload their own blogs, and perform actions such as editing and deleting their own blogs.
 
-[demoImage](projectBlog.png)
+![Alt text](./projectBlog.png)
 
 ## Features
 
