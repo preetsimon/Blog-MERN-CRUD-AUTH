@@ -15,7 +15,7 @@ const Login = () => {
 
   const userRef = useRef();
   const passwordRef = useRef();
-  const {user, dispatch, isFetching } = useContext(Context);
+  const { user, dispatch, isFetching } = useContext(Context);
 
   const toggleLogin = (index) => {
     setToggleState(index);
@@ -51,7 +51,7 @@ const Login = () => {
         type: "LOGIN_SUCCESS",
         payload: res.data,
       });
-      navigate('/');
+      navigate("/");
     } catch (error) {
       dispatch({
         type: "LOGIN_FAILURE",
@@ -121,7 +121,9 @@ const Login = () => {
             <input type="text" placeholder="Username" ref={userRef} />
             <input type="password" placeholder="Password" ref={passwordRef} />
             <a href="#">Forgot your password?</a>
-            <button type="submit" disabled={isFetching}>Sign In</button>
+            <button type="submit" disabled={isFetching}>
+              Sign In
+            </button>
           </form>
         </div>
 

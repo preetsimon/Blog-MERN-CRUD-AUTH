@@ -51,6 +51,8 @@ const SinglePost = () => {
       // window.location.reload("/");
     } catch (error) {}
   };
+
+  
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
